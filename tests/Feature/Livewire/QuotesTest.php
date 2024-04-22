@@ -13,6 +13,7 @@ class QuotesTest extends TestCase
 
     public function testRendersSuccessfully()
     {
+        $this->actingAs(\App\Models\User::factory()->create());
         Livewire::test(Quotes::class)
             ->assertStatus(200);
     }

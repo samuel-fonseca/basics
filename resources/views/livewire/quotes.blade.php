@@ -12,7 +12,7 @@
             </thead>
             <tbody>
                 @foreach ($this->quotes as $quote)
-                    <tr id="{{ $quote['id'] }}">
+                    <tr wire:key="{{ $quote['id'] }}">
                         <td>{{ $quote['quote'] }}</td>
                         <td>{{ $quote['author'] }}</td>
                         <td>
