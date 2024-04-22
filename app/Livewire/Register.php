@@ -3,27 +3,28 @@
 namespace App\Livewire;
 
 use App\Models\User;
+use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title('Register Account')]
 class Register extends Component
 {
+    #[Rule('required|min:3')]
     public $name;
 
+    #[Rule('required|email|unique:users,email')]
     public $email;
 
+    #[Rule('required|confirmed')]
     public $password;
 
+    #[Rule('required')]
     public $password_confirmation;
 
     public function register()
     {
-        $validation = $this->validate([
-            'name' => 'required|min:3',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|confirmed',
-        ]);
+        $this->validate();
 
         try {
             User::create([

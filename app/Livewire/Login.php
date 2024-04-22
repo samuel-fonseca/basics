@@ -2,22 +2,22 @@
 
 namespace App\Livewire;
 
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 class Login extends Component
 {
     public const HOME = '/';
 
+    #[Rule('required|email')]
     public $email;
 
+    #[Rule('required')]
     public $password;
 
     public function login()
     {
-        $this->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        $this->validate();
 
         $loggedIn = auth()->attempt([
             'email' => $this->email,
