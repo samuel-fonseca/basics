@@ -26,14 +26,14 @@ class Quotes extends Component
     public function add()
     {
         $availableQuotes = Inspiring::quotes()->map(function ($quote) {
-            list($quote, $author) = explode(' - ', $quote);
+            [$quote, $author] = explode(' - ', $quote);
 
             return [
                 'quote' => $quote,
                 'author' => $author,
             ];
         })
-        ->whereNotIn('author', auth()->user()->quotes()->pluck('author'));
+            ->whereNotIn('author', auth()->user()->quotes()->pluck('author'));
 
         $quote = $availableQuotes->random();
 

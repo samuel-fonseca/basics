@@ -7,26 +7,30 @@
             </x-alert>
         @endif
         <form wire:submit.prevent="register">
+            <x-forms.text label="Name" model="name" type="text" />
+            <x-forms.text label="Email" model="email" type="email" />
             <div class="my-2">
-                <label for="name" class="block">Name</label>
-                <input type="text" wire:model="name" id="name" name="name" class="form-input w-full bg-slate-950">
-                @error('name') <em>{{ $message }}</em> @enderror
+                <label for="country" class="block">Country</label>
+                <select
+                    wire:model="country"
+                    id="country"
+                    name="country"
+                    @class([
+                        'w-full bg-slate-950 rounded-lg',
+                        'border-2 border-red-500' => $errors->has('country'),
+                        'border border-slate-700' => $errors->missing('country'),
+                    ])
+                >
+                    <option value="" selected disabled>Select a country</option>
+
+                    @foreach(\App\Enums\Country::cases() as $country)
+                        <option value="{{ $country->value }}">{{ $country->label() }}</option>
+                    @endforeach
+                </select>
+                @error('country') <em>{{ $message }}</em> @enderror
             </div>
-            <div class="my-2">
-                <label for="email" class="block">Email</label>
-                <input type="email" wire:model="email" id="email" name="email" class="form-input w-full bg-slate-950">
-                @error('email') <em>{{ $message }}</em> @enderror
-            </div>
-            <div class="my-2">
-                <label for="password" class="block">Password</label>
-                <input type="password" wire:model="password" id="password" name="password" class="form-input w-full bg-slate-950">
-                @error('password') <em>{{ $message }}</em> @enderror
-            </div>
-            <div class="my-2">
-                <label for="password_confirmation" class="block">Confirm Password</label>
-                <input type="password" wire:model="password_confirmation" id="password_confirmation" name="password_confirmation" class="form-input w-full bg-slate-950">
-                @error('password_confirmation') <em>{{ $message }}</em> @enderror
-            </div>
+            <x-forms.text label="Password" model="password" type="password" />
+            <x-forms.text label="Password Confirmation" model="password_confirmation" type="password" />
 
             <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm font-medium text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
                 Register

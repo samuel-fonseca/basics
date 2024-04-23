@@ -34,6 +34,7 @@ class Register extends Component
             ]);
 
             session()->flash('message', 'Account created successfully!');
+
             return redirect()->route('login');
         } catch (\Exception $e) {
             $this->addError('email', 'Something went wrong. Please try again.');
