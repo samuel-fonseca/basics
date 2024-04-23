@@ -2,14 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Enums\PostStatus;
+use App\Filament\Forms\CreatePostForm;
 use App\Models\Post;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\MarkdownEditor;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Split;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
@@ -31,39 +25,12 @@ class CreatePost extends Component implements HasForms
 
     public function form(Form $form): Form
     {
-        return $form->schema([
-            Split::make([
-                Section::make([
-                    TextInput::make('title')
-                        ->label('Title')
-                        ->required()
-                        ->live(true)
-                        ->afterStateUpdated(fn ($state) => $this->data['slug'] = str($state)->slug()),
+        return CreatePostForm::make($form)->statePath('data');
+    }
 
-                    TextInput::make('slug')
-                        ->label('Slug')
-                        ->required(),
-
-                    MarkdownEditor::make('content')
-                        ->label('Content')
-                        ->required(),
-                ]),
-
-                Section::make([
-                    Select::make('status')
-                        ->label('Status')
-                        ->default(PostStatus::Draft->value)
-                        ->options(
-                            collect(PostStatus::cases())
-                                ->mapWithKeys(fn ($status) => [$status->value => $status->name])
-                        ),
-
-                    DateTimePicker::make('published_at')
-                        ->label('Date Published')
-                        ->time(false),
-                ])->grow(false)
-            ])
-        ])->statePath('data');
+    public function updatedDataTitle($value): void
+    {
+        $this->data['slug'] = str($value)->slug();
     }
 
     public function create(): void

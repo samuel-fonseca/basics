@@ -34,7 +34,7 @@ class Post extends Model
     public function getSummaryAttribute(): string
     {
         // keep only the first words and remove any non-word characters
-        return str($this->content)->words(30)
+        return str($this->content)->words(10)
             ->replaceMatches('/\W+\ /', '')
             ->__toString();
     }

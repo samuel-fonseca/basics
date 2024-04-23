@@ -2,15 +2,22 @@
 
 namespace App\Livewire;
 
+use App\Filament\Tables\PostTable;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Table;
 use Livewire\Component;
 
-class Posts extends Component
+class Posts extends Component implements HasForms, HasTable
 {
-    public $posts;
+    use InteractsWithForms;
+    use InteractsWithTable;
 
-    public function mount(): void
+    public function table(Table $table): Table
     {
-        $this->posts = auth()->user()->posts;
+        return PostTable::make($table);
     }
 
     public function render()
