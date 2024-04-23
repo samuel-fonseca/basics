@@ -1,3 +1,0 @@
-models:
-    Quote: { user_id: integer, quote: text, author: string, is_favorite: "boolean default:'0'" }
-    User: { name: string, email: string, email_verified_at: 'datetime nullable', password: string, remember_token: 'string nullable' }

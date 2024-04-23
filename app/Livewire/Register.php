@@ -50,6 +50,7 @@ class Register extends Component
 
     public function render()
     {
-        return view('livewire.register');
+        return view('livewire.register')
+            ->layout('components.layouts.guest');
     }
 }
