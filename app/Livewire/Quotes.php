@@ -2,28 +2,31 @@
 
 namespace App\Livewire;
 
+use Auth;
 use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Collection;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class Quotes extends Component
 {
     #[Computed]
-    public function quotes()
+    public function quotes(): Collection
     {
-        return auth()->user()->quotes()->get();
+        return Auth::user()->quotes()->get();
     }
 
     /*******************************************
     * Component Actions
     *******************************************/
 
-    public function delete($quoteId)
+    public function delete($quoteId): void
     {
-        auth()->user()->quotes()->where('id', $quoteId)->delete();
+        Auth::user()->quotes()->where('id', $quoteId)->delete();
     }
 
-    public function add()
+    public function add(): void
     {
         $availableQuotes = Inspiring::quotes()->map(function ($quote) {
             [$quote, $author] = explode(' - ', $quote);
@@ -33,11 +36,11 @@ class Quotes extends Component
                 'author' => $author,
             ];
         })
-            ->whereNotIn('author', auth()->user()->quotes()->pluck('author'));
+            ->whereNotIn('author', Auth::user()->quotes()->pluck('author'));
 
         $quote = $availableQuotes->random();
 
-        auth()->user()->quotes()->create([
+        Auth::user()->quotes()->create([
             'quote' => $quote['quote'],
             'author' => $quote['author'],
         ]);
@@ -45,9 +48,9 @@ class Quotes extends Component
         session()->flash('message', 'Quote added!');
     }
 
-    public function toggleFavorite($quoteId)
+    public function toggleFavorite($quoteId): void
     {
-        $quote = auth()->user()->quotes()->where('id', $quoteId)->first();
+        $quote = Auth::user()->quotes()->where('id', $quoteId)->first();
 
         $quote->update([
             'is_favorite' => ! $quote->is_favorite,
@@ -57,7 +60,7 @@ class Quotes extends Component
     /**
      * Render.
      */
-    public function render()
+    public function render(): View
     {
         return view('livewire.quotes');
     }
