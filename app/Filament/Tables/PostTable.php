@@ -18,6 +18,7 @@ class PostTable implements Table
     {
         return $table
             ->query(Auth::user()->posts()->getQuery())
+            ->heading('Posts')
             ->columns([
                 TextColumn::make('title')
                     ->searchable()

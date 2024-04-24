@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\PostStatus;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +18,15 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        $title = $this->faker->sentence;
+
         return [
-            //
+            'title' => $title,
+            'slug' => str($title)->slug(),
+            'content' => $this->faker->paragraph,
+            'user_id' => User::factory(),
+            'status' => fake()->randomElement(PostStatus::cases()),
+            'published_at' => fake()->dateTimeBetween('-1 year', 'now'),
         ];
     }
 }

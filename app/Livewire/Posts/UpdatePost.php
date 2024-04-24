@@ -16,9 +16,12 @@ class UpdatePost extends Component implements HasForms
 
     public ?array $data = [];
 
+    public Post $post;
+
     public function mount(Post $post): void
     {
-        $this->ensureUserOwnsPost($post);
+        $this->post = $post;
+        $this->ensureUserOwnsPost();
         $this->form->fill($post->toArray());
     }
 
@@ -29,8 +32,11 @@ class UpdatePost extends Component implements HasForms
 
     public function update(): void
     {
-        $this->validate();
+        $this->ensureUserOwnsPost()
+            ->validate();
+
         Auth::user()->posts()->find($this->data['id'])->update($this->data);
+
         $this->redirect(route('posts'));
     }
 
@@ -43,10 +49,12 @@ class UpdatePost extends Component implements HasForms
     * Internal
     *******************************************/
 
-    protected function ensureUserOwnsPost(Post $post): void
+    protected function ensureUserOwnsPost(): static
     {
-        if (auth()->id() !== $post->user_id) {
+        if (auth()->id() !== $this->post->user_id) {
             abort(403);
         }
+
+        return $this;
     }
 }
