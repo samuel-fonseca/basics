@@ -4,6 +4,7 @@ namespace App\Filament\Tables;
 
 use App\Enums\PostStatus;
 use App\Models\Post;
+use Auth;
 use Filament\Support\Colors\Color;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\SelectColumn;
@@ -16,7 +17,7 @@ class PostTable implements Table
     public static function make(FilamentTable $table): FilamentTable
     {
         return $table
-            ->query(Post::query()->whereBelongsTo(auth()->user()))
+            ->query(Auth::user()->posts()->getQuery())
             ->columns([
                 TextColumn::make('title')
                     ->searchable()
@@ -27,10 +28,7 @@ class PostTable implements Table
 
                 SelectColumn::make('status')
                     ->sortable()
-                    ->options(
-                        collect(PostStatus::cases())
-                            ->mapWithKeys(fn ($status) => [$status->value => $status->name])
-                    ),
+                    ->options(PostStatus::forSelect()),
 
                 TextColumn::make('published_at')
                     ->sortable(),
@@ -40,10 +38,7 @@ class PostTable implements Table
             ])
             ->filters([
                 SelectFilter::make('status')
-                    ->options(
-                        collect(PostStatus::cases())
-                            ->mapWithKeys(fn ($status) => [$status->value => $status->name])
-                    ),
+                    ->options(PostStatus::forSelect()),
             ])
             ->actions([
                 Action::make('edit')
@@ -63,6 +58,7 @@ class PostTable implements Table
                     ->name('New Post')
                     ->icon('heroicon-o-plus')
                     ->url(route('posts.create')),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 }

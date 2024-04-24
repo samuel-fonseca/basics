@@ -42,10 +42,7 @@ class PostForm implements Form
                     Select::make('status')
                         ->label('Status')
                         ->default(PostStatus::Draft->value)
-                        ->options(
-                            collect(PostStatus::cases())
-                                ->mapWithKeys(fn ($status) => [$status->value => $status->name])
-                        )
+                        ->options(PostStatus::forSelect())
                         ->live(),
 
                     DateTimePicker::make('published_at')
