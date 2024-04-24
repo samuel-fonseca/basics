@@ -27,7 +27,7 @@ class Login extends Component
         if ($loggedIn) {
             return redirect()->route('home');
         } else {
-            session()->flash('message', 'Invalid credentials. Please try again.');
+            session()->flash('error', 'Invalid credentials. Please try again.');
             $this->reset('password');
         }
     }

@@ -1,10 +1,14 @@
 @props([
-    'color' => 'blue',
+    'type' => 'info',
 ])
 
 <div {{
-    $attributes->merge([
-        'class' => "bg-{$color}-500 text-white p-4 my-4 rounded-xl",
+    $attributes->class([
+        'text-white p-4 my-4 rounded-xl',
+        'bg-blue-500' => $type === 'info',
+        'bg-green-500' => $type === 'success',
+        'bg-yellow-500' => $type === 'warning',
+        'bg-red-500' => $type === 'error',
     ])
 }}>
     {{ $slot }}

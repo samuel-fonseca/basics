@@ -1,6 +1,6 @@
 <x-card>
     @if($this->quotes->isEmpty())
-        <x-alert color="blue">No quotes found. <a href="#" wire:click.prevent="add" class="text-gray-100 underline">Start by generating your first quote</a>!</x-alert>
+        <x-alert>No quotes found. <a href="#" wire:click.prevent="add" class="text-gray-100 underline">Start by generating your first quote</a>!</x-alert>
     @else
         <table class="table w-full">
             <thead class="text-left">

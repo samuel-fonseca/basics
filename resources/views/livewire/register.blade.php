@@ -1,8 +1,13 @@
 <div class="container mt-5 mx-auto">
     <h1 class="text-2xl text-center">Register to my awesome app</h1>
     <div class="w-full max-w-sm mx-auto">
+        @if(session('error'))
+            <x-alert type="error">
+                {{ $error }}
+            </x-alert>
+        @endif
         @if(session('message'))
-            <x-alert color="red">
+            <x-alert type="info">
                 {{ $message }}
             </x-alert>
         @endif
