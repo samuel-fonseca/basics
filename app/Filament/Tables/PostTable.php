@@ -8,6 +8,7 @@ use Filament\Support\Colors\Color;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table as FilamentTable;
 
 class PostTable implements Table
@@ -38,9 +39,18 @@ class PostTable implements Table
                     ->sortable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->options(
+                        collect(PostStatus::cases())
+                            ->mapWithKeys(fn ($status) => [$status->value => $status->name])
+                    ),
             ])
             ->actions([
+                Action::make('edit')
+                    ->name('Edit')
+                    ->icon('heroicon-o-pencil')
+                    ->url(fn (Post $post) => route('posts.update', $post)),
+
                 Action::make('delete')
                     ->name('Delete')
                     ->icon('heroicon-o-trash')

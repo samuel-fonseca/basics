@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Posts;
 
-use App\Filament\Forms\CreatePostForm;
+use App\Filament\Forms\PostForm;
 use App\Models\Post;
+use Auth;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
@@ -25,25 +26,20 @@ class CreatePost extends Component implements HasForms
 
     public function form(Form $form): Form
     {
-        return CreatePostForm::make($form)->statePath('data');
-    }
-
-    public function updatedDataTitle($value): void
-    {
-        $this->data['slug'] = str($value)->slug();
+        return PostForm::make($form)->statePath('data');
     }
 
     public function create(): void
     {
         $this->validate();
 
-        auth()->user()->posts()->create($this->data);
+        Auth::user()->posts()->create($this->data);
 
         $this->redirect(route('posts'));
     }
 
     public function render(): View
     {
-        return view('livewire.create-post');
+        return view('livewire.posts.create');
     }
 }

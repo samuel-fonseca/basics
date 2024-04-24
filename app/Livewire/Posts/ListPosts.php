@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Posts;
 
 use App\Filament\Tables\PostTable;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -10,7 +10,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Livewire\Component;
 
-class Posts extends Component implements HasForms, HasTable
+class ListPosts extends Component implements HasForms, HasTable
 {
     use InteractsWithForms;
     use InteractsWithTable;
@@ -22,6 +22,6 @@ class Posts extends Component implements HasForms, HasTable
 
     public function render()
     {
-        return view('livewire.posts');
+        return view('livewire.posts.list');
     }
 }

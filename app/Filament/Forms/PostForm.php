@@ -10,8 +10,10 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form as FilamentForm;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 
-class CreatePostForm implements Form
+class PostForm implements Form
 {
     public static function make(FilamentForm $form): FilamentForm
     {
@@ -21,16 +23,20 @@ class CreatePostForm implements Form
                     TextInput::make('title')
                         ->label('Title')
                         ->required()
-                        ->live(true),
+                        ->live(true)
+                        ->afterStateUpdated(fn ($state, Set $set) => $set('slug', str($state)->slug())),
 
                     TextInput::make('slug')
                         ->label('Slug')
-                        ->required(),
+                        ->required()
+                        ->readOnly(),
 
                     MarkdownEditor::make('content')
                         ->label('Content')
-                        ->required(),
-                ]),
+                        ->required()
+                        ->columnSpan(2),
+                ])
+                    ->columns(2),
 
                 Section::make([
                     Select::make('status')
@@ -39,11 +45,13 @@ class CreatePostForm implements Form
                         ->options(
                             collect(PostStatus::cases())
                                 ->mapWithKeys(fn ($status) => [$status->value => $status->name])
-                        ),
+                        )
+                        ->live(),
 
                     DateTimePicker::make('published_at')
                         ->label('Date Published')
-                        ->time(false),
+                        ->time(false)
+                        ->hidden(fn (Get $get) => $get('status') !== PostStatus::Published->value),
                 ])->grow(false),
             ]),
         ]);
