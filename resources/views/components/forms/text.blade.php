@@ -1,3 +1,12 @@
+@props([
+    'model',
+    'label',
+    'type' => 'text',
+    'placeholder' => '',
+    'required' => false,
+    'disabled' => false,
+])
+
 <div class="my-4">
     <span class="block">{{ $label }}</span>
     <input
