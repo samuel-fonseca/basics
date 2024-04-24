@@ -1,6 +1,7 @@
-@extends('components.layouts.app')
+<x-layouts.app>
+    <h1 class="text-4xl text-start">Dashboard</h1>
 
-@section('content')
+    <x-divider class="my-8" />
     <div class="container mx-auto my-8">
         <livewire:user-card />
     </div>
@@ -9,4 +10,4 @@
         <h1 class="text-2xl text-center">Be Inspired</h1>
         <livewire:quotes />
     </div>
-@endsection
+</x-layouts.app>

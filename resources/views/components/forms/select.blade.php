@@ -1,14 +1,13 @@
 @props([
     'model' => null,
     'label' => null,
-    'type' => 'text',
+    'options' => [],
 ])
 
-<div {{ $attributes->whereStartsWith('class')->class(['my-4']) }}>
+<div {{ $attributes->whereStartsWith('class')->class("my-2") }}>
     <span class="block">{{ $label }}</span>
-    <input
+    <select
         wire:model="{{ $model }}"
-        type="{{ $type }}"
         @class([
             'w-full bg-slate-950 rounded-lg',
             'border-2 border-red-500' => $errors->has($model),
@@ -16,5 +15,17 @@
         ])
         {{ $attributes->whereDoesntStartWith('class') }}
     >
+        @if($options instanceof \Illuminate\View\ComponentsSlot)
+            {{ $options }}
+        @else
+            @foreach ($options as $key => $option)
+                <option
+                    @if(is_int($key))value="{{ $key }}"@endif
+                >
+                    {{ $option }}
+                </option>
+            @endforeach
+        @endif
+    </select>
     @error($model) <em class="text-red-500">{{ $message }}</em> @enderror
 </div>

@@ -14,26 +14,14 @@
         <form wire:submit.prevent="register">
             <x-forms.text label="Name" model="name" type="text" />
             <x-forms.text label="Email" model="email" type="email" />
-            <div class="my-2">
-                <label for="country" class="block">Country</label>
-                <select
-                    wire:model="country"
-                    id="country"
-                    name="country"
-                    @class([
-                        'w-full bg-slate-950 rounded-lg',
-                        'border-2 border-red-500' => $errors->has('country'),
-                        'border border-slate-700' => $errors->missing('country'),
-                    ])
-                >
+            <x-forms.select label="Country" model="country">
+                <x-slot.options>
                     <option value="" selected disabled>Select a country</option>
-
                     @foreach(\App\Enums\Country::cases() as $country)
                         <option value="{{ $country->value }}">{{ $country->label() }}</option>
                     @endforeach
-                </select>
-                @error('country') <em>{{ $message }}</em> @enderror
-            </div>
+                </x-slot.options>
+            </x-forms.select>
             <x-forms.text label="Password" model="password" type="password" />
             <x-forms.text label="Password Confirmation" model="password_confirmation" type="password" />
 

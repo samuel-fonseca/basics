@@ -14,6 +14,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/posts/create', Posts\CreatePost::class)->name('posts.create');
     Route::get('/posts/edit/{post}', Posts\UpdatePost::class)->name('posts.update');
     // Route::get('/posts/{id}', ViewPost::class)->name('posts.create');
+
+    Route::get('components', function () {
+        return view('available-components');
+    })->name('available-components');
 });
 
 Route::get('login', Login::class)->name('login');
